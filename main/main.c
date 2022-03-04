@@ -7,6 +7,7 @@
 #include "esp_system.h"
 #include "nvs_flash.h"
 #include "codelock.h"
+#include "validation_leds.h"
 
 static const char *TAG = "BHOCKZ";
 
@@ -22,5 +23,6 @@ void app_main(void)
     ESP_ERROR_CHECK( ret );
     */
 
+    init_validation_leds();
     init_codelock();
 }

@@ -1,28 +1,44 @@
 menu "Codelock inputs"
-
     config A_GPIO
-        int "A GPIO number"
+        int "A key GPIO number"
         range 0 39
-        default 0
+        default 16
 
     config B_GPIO
-        int "B GPIO number"
+        int "B key GPIO number"
         range 0 39
-        default 2
+        default 17
 
     config C_GPIO
-        int "C GPIO number"
+        int "C key GPIO number"
         range 0 39
-        default 4
+        default 18
 
     config D_GPIO
-        int "D GPIO number"
+        int "D key GPIO number"
         range 0 39
-        default 5
+        default 19
 
     config E_GPIO
-        int "E GPIO number"
+        int "E key GPIO number"
         range 0 39
-        default 7
-
+        default 21
 endmenu
+
+menu "Validation leds"
+    config VALID_LED_GPIO
+        int "Valid led GPIO number"
+        range 0 39
+        default 22
+
+    config INVALID_LED_GPIO
+        int "Invalid led GPIO number"
+        range 0 39
+        default 23
+    
+    config LED_BLINK_DURATION
+        int "Led on duration before going back off"
+        range 0 10000
+        default 1000
+endmenu
+

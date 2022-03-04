@@ -9,6 +9,8 @@
 #include "freertos/queue.h"
 #include "driver/gpio.h"
 #include "esp_log.h"
+#include "validation_leds.h"
+
 
 #define KEYS_NB 5
 static uint32_t KEYS_GPIOS[KEYS_NB] = {
@@ -39,7 +41,8 @@ static void IRAM_ATTR key_press_isr_handler(void* arg)
     xQueueSendFromISR(key_press_evt_queue, &key_gpio, NULL);
 }
 
-static char gpio_to_key(uint32_t key_gpio) {
+static char gpio_to_key(uint32_t key_gpio)
+{
     for (int i=0; i < KEYS_NB; i++)
         if (KEYS_GPIOS[i] == key_gpio)
             return 'A' + i;
@@ -58,10 +61,16 @@ static void codelock_task(void* arg)
                 input_code[input_code_length++] = key;
                 ESP_LOGI("CODELOCK", "input: %c", input_code[input_code_length-1]);
                 if (input_code_length == CODE_LENGTH) {
-                    ESP_LOGI("CODELOCK", "CODE ENTERED");
-                    if(strncmp(input_code, CODE, CODE_LENGTH) == 0)
-                        ESP_LOGI("CODELOCK", "LOCKER OPENING");
                     input_code_length = 0;
+                    ESP_LOGI("CODELOCK", "CODE ENTERED");
+                    if(strncmp(input_code, CODE, CODE_LENGTH) == 0) {
+                        ESP_LOGI("CODELOCK", "LOCKER OPENING");
+                        blink_validation_led(VALID_LED);
+                    }
+                    else {
+                        ESP_LOGI("CODELOCK", "WRONG CODE");
+                        blink_validation_led(INVALID_LED);
+                    }
                 }
             }
         }
