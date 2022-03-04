@@ -1,0 +1,28 @@
+menu "Codelock inputs"
+
+    config A_GPIO
+        int "A GPIO number"
+        range 0 39
+        default 0
+
+    config B_GPIO
+        int "B GPIO number"
+        range 0 39
+        default 2
+
+    config C_GPIO
+        int "C GPIO number"
+        range 0 39
+        default 4
+
+    config D_GPIO
+        int "D GPIO number"
+        range 0 39
+        default 5
+
+    config E_GPIO
+        int "E GPIO number"
+        range 0 39
+        default 7
+
+endmenu
