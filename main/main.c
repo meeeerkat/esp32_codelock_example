@@ -21,7 +21,7 @@ void app_main(void)
     ESP_ERROR_CHECK( ret );
 
     init_validation_leds();
-    init_codelock("ABCD");
+    init_codelock("ABCDEF");
     codelock_set_on_success_callback(codelock_success_callback);
     codelock_set_on_failure_callback(codelock_failure_callback);
 }
