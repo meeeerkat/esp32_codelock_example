@@ -11,9 +11,15 @@
 
 static const char *TAG = "BHOCKZ";
 
+void codelock_success_callback(void) {
+    blink_validation_led(SUCCESS_LED);
+}
+void codelock_failure_callback(void) {
+    blink_validation_led(FAILURE_LED);
+}
+
 void app_main(void)
 {
-    /*
     esp_err_t ret;
     ret = nvs_flash_init();
     if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
@@ -21,8 +27,9 @@ void app_main(void)
         ret = nvs_flash_init();
     }
     ESP_ERROR_CHECK( ret );
-    */
 
+    codelock_set_on_success_callback(codelock_success_callback);
+    codelock_set_on_failure_callback(codelock_failure_callback);
     init_validation_leds();
     init_codelock();
 }

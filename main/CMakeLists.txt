@@ -1,5 +1,4 @@
 set(srcs "main.c"
-         "codelock.c"
          "validation_leds.c")
 set(include_dirs ".")
 

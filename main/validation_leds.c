@@ -30,10 +30,10 @@ void validation_leds_task(void *args)
 
 void init_validation_leds(void)
 {
-    gpio_set_direction(VALID_LED, GPIO_MODE_OUTPUT);
-    gpio_set_direction(INVALID_LED, GPIO_MODE_OUTPUT);
-    gpio_set_level(VALID_LED, 0);
-    gpio_set_level(INVALID_LED, 0);
+    gpio_set_direction(SUCCESS_LED, GPIO_MODE_OUTPUT);
+    gpio_set_direction(FAILURE_LED, GPIO_MODE_OUTPUT);
+    gpio_set_level(SUCCESS_LED, 0);
+    gpio_set_level(FAILURE_LED, 0);
     /*
     gpio_config_t leds_io_conf = {};
     leds_io_conf.pin_bit_mask = (1ULL << VALID_LED) || (1ULL << INVALID_LED);
