@@ -1,0 +1,17 @@
+menu "Validation leds"
+    config SUCCESS_LED_GPIO
+        int "Success led GPIO number"
+        range 0 39
+        default 22
+
+    config FAILURE_LED_GPIO
+        int "Failure led GPIO number"
+        range 0 39
+        default 23
+    
+    config LED_BLINK_DURATION
+        int "Led on duration before going back off"
+        range 0 10000
+        default 1000
+endmenu
+

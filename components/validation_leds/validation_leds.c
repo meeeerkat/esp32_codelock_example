@@ -6,9 +6,10 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/queue.h"
-#include "esp_log.h"
+
 
 static xQueueHandle blink_led_command_queue = NULL;
+
 
 void blink_validation_led(uint32_t led_gpio)
 {
@@ -20,7 +21,6 @@ void validation_leds_task(void *args)
     uint32_t led_gpio;
     while (1) {
         if(xQueueReceive(blink_led_command_queue, &led_gpio, portMAX_DELAY)) {
-            ESP_LOGI("VALIDATION_LEDS", "LED PIN %d blinking", led_gpio);
             gpio_set_level(led_gpio, 1);
             vTaskDelay(pdMS_TO_TICKS(CONFIG_LED_BLINK_DURATION));
             gpio_set_level(led_gpio, 0);

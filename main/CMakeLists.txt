@@ -1,5 +1,4 @@
-set(srcs "main.c"
-         "validation_leds.c")
+set(srcs "main.c")
 set(include_dirs ".")
 
 idf_component_register(SRCS "${srcs}"
