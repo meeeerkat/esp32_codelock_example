@@ -26,16 +26,25 @@ static uint32_t KEYS_GPIOS[KEYS_NB] = {
         | (1ULL << CONFIG_D_GPIO) \
         | (1ULL << CONFIG_E_GPIO));
 
-#define CODE_LENGTH 4
-static const char CODE[CODE_LENGTH] = {'A', 'D', 'E', 'C'};
-static uint8_t input_code_length = 0;
-static char input_code[CODE_LENGTH];
+// code and input_code are not null terminated
+static char* code;
+static size_t code_length;
+static char* input_code;
+static size_t input_code_length = 0;
 
 static xQueueHandle key_press_evt_queue = NULL;
 static void (*on_success_callback) (void) = NULL;
 static void (*on_failure_callback) (void) = NULL;
 
 
+// Setters
+void codelock_set_code(char *code_p) {
+    // Generating code
+    code_length = strlen(code_p);
+    code = malloc(code_length * sizeof(char));
+    strncpy(code, code_p, code_length);
+    input_code = malloc(code_length * sizeof(char));
+}
 void codelock_set_on_success_callback(void (*callback) (void)) {
     on_success_callback = callback;
 }
@@ -43,12 +52,14 @@ void codelock_set_on_failure_callback(void (*callback) (void)) {
     on_failure_callback = callback;
 }
 
+// ISR handler
 static void IRAM_ATTR key_press_isr_handler(void* arg)
 {
     uint32_t key_gpio = (uint32_t) arg;
     xQueueSendFromISR(key_press_evt_queue, &key_gpio, NULL);
 }
 
+// Helper
 static char gpio_to_key(uint32_t key_gpio)
 {
     for (int i=0; i < KEYS_NB; i++)
@@ -57,6 +68,7 @@ static char gpio_to_key(uint32_t key_gpio)
     return 0;
 }
 
+// Task
 static void codelock_task(void* arg)
 {
     ESP_LOGI("INPUTS", "Ready to take inputs");
@@ -68,10 +80,10 @@ static void codelock_task(void* arg)
             if (key != 0) {
                 input_code[input_code_length++] = key;
                 ESP_LOGI("CODELOCK", "input: %c", input_code[input_code_length-1]);
-                if (input_code_length == CODE_LENGTH) {
+                if (input_code_length == code_length) {
                     input_code_length = 0;
                     ESP_LOGI("CODELOCK", "CODE ENTERED");
-                    if(strncmp(input_code, CODE, CODE_LENGTH) == 0) {
+                    if(strncmp(code, input_code, code_length) == 0) {
                         ESP_LOGI("CODELOCK", "LOCKER OPENING");
                         if (on_success_callback)
                             on_success_callback();
@@ -87,8 +99,11 @@ static void codelock_task(void* arg)
     }
 }
 
-void init_codelock(void)
+void init_codelock(char *code)
 {
+    codelock_set_code(code);
+
+    // Configuring input gpios
     gpio_config_t keys_io_conf = {};
     // interrupt on rising edge
     keys_io_conf.intr_type = GPIO_INTR_POSEDGE;
@@ -98,13 +113,13 @@ void init_codelock(void)
     keys_io_conf.pull_up_en = 1;
     gpio_config(&keys_io_conf);
 
+    // Creating task to handle the queue events
     key_press_evt_queue = xQueueCreate(1, sizeof(uint32_t));
     xTaskCreate(codelock_task, "codelock_task", 2048, NULL, 10, NULL);
 
-    // install gpio isr service for low and medium priority interrupts
+    // Installing gpio isr service for low and medium priority interrupts
     gpio_install_isr_service(ESP_INTR_FLAG_LOWMED);
     for (uint8_t i=0; i < KEYS_NB; i++)
         gpio_isr_handler_add(KEYS_GPIOS[i], key_press_isr_handler, (void*) KEYS_GPIOS[i]);
 }
-
 
