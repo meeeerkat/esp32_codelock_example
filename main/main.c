@@ -1,5 +1,6 @@
 #include "esp_system.h"
 #include "nvs_flash.h"
+#include "ble_codelock.h"
 #include "codelock.h"
 #include "validation_leds.h"
 
@@ -24,4 +25,6 @@ void app_main(void)
     init_codelock("ABCDEF");
     codelock_set_on_success_callback(codelock_success_callback);
     codelock_set_on_failure_callback(codelock_failure_callback);
+
+    init_ble_codelock();
 }
