@@ -1,0 +1,9 @@
+[submodule "components/ble_codelock"]
+	path = components/ble_codelock
+	url = git@github.com:meeeerkat/esp32_ble_codelock.git
+[submodule "components/codelock"]
+	path = components/codelock
+	url = git@github.com:meeeerkat/esp32_codelock.git
+[submodule "components/validation_leds"]
+	path = components/validation_leds
+	url = git@github.com:meeeerkat/esp32_validation_leds.git
