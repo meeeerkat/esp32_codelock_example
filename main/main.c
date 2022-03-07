@@ -1,13 +1,18 @@
 #include "esp_system.h"
+#include "esp_log.h"
 #include "nvs_flash.h"
 #include "ble_codelock.h"
 #include "codelock.h"
 #include "validation_leds.h"
 
+static const char *TAG = "MAIN";
+
 void codelock_success_callback(void) {
+    ESP_LOGI(TAG, "RIGHT CODE");
     blink_validation_led(SUCCESS_LED);
 }
 void codelock_failure_callback(void) {
+    ESP_LOGI(TAG, "WRONG CODE");
     blink_validation_led(FAILURE_LED);
 }
 
