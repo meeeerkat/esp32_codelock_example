@@ -3,6 +3,7 @@
 #include "nvs_flash.h"
 #include "ble_codelock.h"
 #include "codelock.h"
+#include "potentiometer_lock.h"
 #include "validation_leds.h"
 
 static const char *TAG = "MAIN";
@@ -36,4 +37,9 @@ void app_main(void)
     init_ble_codelock(code);
     ble_codelock_set_on_success_callback(codelock_success_callback);
     ble_codelock_set_on_failure_callback(codelock_failure_callback);
+
+    code_char c[4] = {3, 1, 4, 2};
+    init_potentiometer_lock(c, 4);
+    potentiometer_lock_set_on_success_callback(codelock_success_callback);
+    potentiometer_lock_set_on_failure_callback(codelock_failure_callback);
 }

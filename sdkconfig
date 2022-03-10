@@ -1314,6 +1314,14 @@ CONFIG_F_GPIO=22
 # end of Codelock inputs
 
 #
+# Potentiometer lock
+#
+CONFIG_POTENTIOMETER_ADC_CHANNEL=0
+CONFIG_POSITIONS_NB=5
+CONFIG_READ_VALUE_DELTA=100
+# end of Potentiometer lock
+
+#
 # Validation leds
 #
 CONFIG_SUCCESS_LED_GPIO=32
