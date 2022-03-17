@@ -1,6 +1,7 @@
 
 ## A small codelock example
-Using my codelock & validation\_leds components
+This project's purpose is to provide an example on how to use the different locks.
+See the repository of each components to get more details.
 
 ### Dependencies
-codelock & validation\_leds component
+All components under components/ (and esp-idf to compile and run the project).
