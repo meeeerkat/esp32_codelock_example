@@ -7,3 +7,6 @@
 [submodule "components/validation_leds"]
 	path = components/validation_leds
 	url = git@github.com:meeeerkat/esp32_validation_leds.git
+[submodule "components/potentiometer_lock"]
+	path = components/potentiometer_lock
+	url = git@github.com:meeeerkat/esp32_potentiometer_lock.git
